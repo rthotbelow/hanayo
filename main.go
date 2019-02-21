@@ -278,7 +278,11 @@ func generateEngine() *gin.Engine {
 	r.GET("/register/verify", verifyAccount)
 	r.GET("/register/welcome", welcome)
 
+	r.GET("/clans/create", ccreate)
+	r.POST("/clans/create", ccreateSubmit)
+	
 	r.GET("/u/:user", userProfile)
+	r.GET("/c/:cid", clanPage)
 	r.GET("/b/:bid", beatmapInfo)
 
 	r.POST("/pwreset", passwordReset)
@@ -303,7 +307,11 @@ func generateEngine() *gin.Engine {
 	r.POST("/settings/2fa/totp", totpSetup)
 	r.GET("/settings/discord/finish", discordFinish)
 	r.POST("/settings/profbackground/:type", profBackground)
-
+	r.POST("/settings/clansettings", createInvite)
+	r.POST("settings/clansettings/k", clanKick)
+	r.GET("/clans/invite/:inv", clanInvite)
+    	r.POST("/c/:cid", leaveClan)
+	
 	r.POST("/dev/tokens/create", createAPIToken)
 	r.POST("/dev/tokens/delete", deleteAPIToken)
 	r.POST("/dev/tokens/edit", editAPIToken)
@@ -322,7 +330,7 @@ func generateEngine() *gin.Engine {
 	r.Any("/blog/*url", blogRedirect)
 
 	r.GET("/help", func(c *gin.Context) {
-		c.Redirect(301, "https://support.ripple.moe")
+		c.Redirect(301, "https://discord.gg/55drubW")
 	})
 
 	loadSimplePages(r)
@@ -333,5 +341,5 @@ func generateEngine() *gin.Engine {
 }
 
 const alwaysRespondText = `Ooops! Looks like something went really wrong while trying to process your request.
-Perhaps report this to a Ripple developer?
+Perhaps report this to a osu!thailand developer?
 Retrying doing again what you were trying to do might work, too.`
