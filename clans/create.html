@@ -1,0 +1,52 @@
+{{ define "tpl" }}
+<div class="ui container">
+	{{ $regEnabled := qb "SELECT value_int FROM system_settings WHERE name = 'ccreation_enabled'" }}
+	{{ $isClan := qb "SELECT user, clan FROM user_clans WHERE user = ?" .Context.User.ID }}
+	{{ if not .Context.User.ID }}
+		<div class="ui segment">
+			{{ .T "คุณต้องเข้าสู่ระบบก่อนนะ!" }}
+		</div>
+	{{ else if not ($regEnabled.value_int.Bool) }}
+		<div class="ui error message">
+			{{ .T "โทษทีนะ รู้สึกเหมือนจะสร้างแคลนตอนนี้ไม่ได้ ไว้ลองทีหลังนะ" }}
+		</div>
+	{{ else if ($isClan) }}
+		<div class="ui segment">
+			{{ .T "คุณอยู่ในแคลนอยู่แล้ว" }}
+		</div>
+	{{ else if has .Context.User.Privileges 4 }}
+		<div class="tiny container">
+			<div class="ui raised segments">
+				<div class="ui segment">
+					<form id="register-form" class="ui form" method="post" action="/clans/create">
+						<div class="field">
+							<label>{{ .T "ชื่อแคลนสามารถมีตัวอักษร, ตัวเลข และอักษรพิเศษต่อไปนี้ <code>_[]-</code>" | html }}</label>
+							<input tabindex="1" type="text" name="name" placeholder="{{ .T "ชื่อแคลน" }}" value="{{ .FormData.name }}" required pattern="{2,15}$">
+						</div>
+						<div class="field">
+							<label class="left aligned">{{ "ตัวย่อแคลน (2-6 ตัว)" }}</label>
+							<input tabindex="2" type="text" name="tag" placeholder="{{ "ตัวย่อแคลน" }}" value="{{ .FormData.tag }}" pattern="{2,6}$">
+						</div>
+						<div class="field">
+							<label>{{ .T "เกี่ยวกับแคลน (ใส่หรือไม่ใส่ก็ได้)" }}</label>
+							<input tabindex="3" type="text" name="description" placeholder="{{ .T "เกี่ยวกับแคลน" }}" value="{{ .FormData.description }}">
+						</div>
+						<div class="field">
+							<label>{{ .T "รูปแคลน [ลิ้งค์] (ใส่หรือไม่ใส่ก็ได้)" }}</label>
+							<input tabindex="4" type="url" name="icon" placeholder="{{ .T "รูปแคลน" }}" value="{{ .FormData.icon }}">
+						</div>
+						{{ ieForm .Gin }}
+					</form>
+				</div>
+				<div class="ui right aligned segment">
+					<button tabindex="5" class="ui primary button" type="submit" form="register-form">{{ .T "สร้างแคลน" }}</button>
+				</div>
+			</div>
+		</div>
+	{{ else }}
+		<div class="ui error message">
+			{{ .T "คุณต้องเป็นคนที่สนับสนุนเซิร์ฟเวอร์ (Supporter) ของเซิร์ฟเวอร์เพื่อจะให้สร้างแคลนได้!" }}
+		</div>
+	{{ end }}
+</div>
+{{ end }}
