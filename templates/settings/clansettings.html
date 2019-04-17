@@ -42,13 +42,10 @@ Include=menu.html
                                 </label>
                             </div>
                             <input type="file" id="file" style="display:none" accept="image/*" name="avatar">
-                            {{ if has .Context.User.Privileges 4 }}
                                 <div class="field">
                                     <label class="left aligned">{{ $.T "Background [URL] (optional)" }}</label>
                                     <input tabindex="4" type="url" name="bg" placeholder="{{ $.T "Background URL" }}" value="{{ $bg }}">
                                 </div>
-
-                            {{ end }}
                             {{ ieForm .Gin }}
                         </form>
 
