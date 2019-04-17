@@ -16,6 +16,8 @@ NoCompile=true
 
 		{{ navbarItem .Path (.T "Authorized applications") "/settings/authorized_applications" }}
 
+		{{ navbarItem .Path (.T "Clan settings") "/settings/clansettings" }}
+		
 		{{/* Stuff for donators */}}
 		{{ if has .Context.User.Privileges 4 }}
 			{{ navbarItem .Path (.T "Discord donor") "/settings/discord" }}
