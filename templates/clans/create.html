@@ -14,7 +14,7 @@
 		<div class="ui segment">
 			{{ .T "คุณอยู่ในแคลนอยู่แล้ว" }}
 		</div>
-	{{ else if has .Context.User.Privileges 4 }}
+	{{ end }}
 		<div class="tiny container">
 			<div class="ui raised segments">
 				<div class="ui segment">
@@ -43,10 +43,5 @@
 				</div>
 			</div>
 		</div>
-	{{ else }}
-		<div class="ui error message">
-			{{ .T "คุณต้องเป็นคนที่สนับสนุนเซิร์ฟเวอร์ (Supporter) ของเซิร์ฟเวอร์เพื่อจะให้สร้างแคลนได้!" }}
-		</div>
-	{{ end }}
 </div>
 {{ end }}
